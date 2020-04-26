@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-register",
@@ -10,21 +11,31 @@ export class RegisterPage implements OnInit {
   username: string = "";
   password: string = "";
   cpassword: string = "";
-  constructor(public afAuth: AngularFireAuth) {}
+
+  constructor(
+    public loadingController: LoadingController,
+    public afAuth: AngularFireAuth
+  ) {}
 
   ngOnInit() {}
+
   async register() {
-    const { username, password, cpassword } = this;
-    if (password != cpassword) {
-      return console.error("Password don't match");
-    }
-    try {
-      const result = await this.afAuth.createUserWithEmailAndPassword(
-        username + "@quotes.app.emircanerkul.com",
-        password
-      );
-    } catch (error) {
-      console.dir(error);
-    }
+    const loading = await this.loadingController.create({
+      message: "Please wait...",
+    });
+
+    await loading.present();
+    const result = await this.afAuth
+      .createUserWithEmailAndPassword(
+        this.username + "@quotes.app.emircanerkul.com",
+        this.password
+      )
+      .catch((e) => {
+        console.dir(e);
+      })
+      .finally(() => {
+        this.username = this.password = this.cpassword = "";
+        loading.dismiss();
+      });
   }
 }

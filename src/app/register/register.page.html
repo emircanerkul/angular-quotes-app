@@ -28,8 +28,29 @@
       [(ngModel)]="cpassword"
     ></ion-input>
   </ion-item>
+  <ion-item>
+    <ul>
+      <li *ngIf="this.username.trim().length == 0">
+        <ion-text color="danger">You need to enter a username.</ion-text>
+      </li>
+      <li *ngIf="this.password != this.cpassword">
+        <ion-text color="danger">Passwords do not match.</ion-text>
+      </li>
+      <li *ngIf="this.password.length < 6">
+        <ion-text color="danger">
+          Password must contain at least six characters.</ion-text
+        >
+      </li>
+    </ul>
+  </ion-item>
 
-  <ion-button (click)="register()" expand="block" fill="clear" shape="round">
+  <ion-button
+    (click)="register()"
+    [disabled]="this.username.trim().length == 0 || this.password.length < 6 || this.password != this.cpassword"
+    expand="block"
+    fill="clear"
+    shape="round"
+  >
     Register
   </ion-button>
 </ion-content>

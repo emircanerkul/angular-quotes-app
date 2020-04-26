@@ -21,8 +21,25 @@
       [(ngModel)]="password"
     ></ion-input>
   </ion-item>
-
-  <ion-button (click)="login()" expand="block" fill="clear" shape="round">
+  <ion-item>
+    <ul>
+      <li *ngIf="this.username.trim().length == 0">
+        <ion-text color="danger">You need to enter a username.</ion-text>
+      </li>
+      <li *ngIf="this.password.length < 6">
+        <ion-text color="danger">
+          Password must contain at least six characters.</ion-text
+        >
+      </li>
+    </ul>
+  </ion-item>
+  <ion-button
+    (click)="login()"
+    [disabled]="this.username.trim().length == 0 || this.password.length < 6"
+    expand="block"
+    fill="clear"
+    shape="round"
+  >
     Login
   </ion-button>
 </ion-content>
