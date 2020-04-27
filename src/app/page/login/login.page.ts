@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, NgModule } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import {
   AlertController,
@@ -6,8 +6,10 @@ import {
   LoadingController,
 } from "@ionic/angular";
 import { Router } from "@angular/router";
-import { async } from "rxjs/internal/scheduler/async";
+import { Observable } from "rxjs";
+import { UserService } from "../../service/auth/user.service";
 
+export class HomePageModule {}
 @Component({
   selector: "app-login",
   templateUrl: "./login.page.html",
@@ -18,6 +20,7 @@ export class LoginPage implements OnInit {
   password: string = "";
 
   constructor(
+    public user: UserService,
     private afAuth: AngularFireAuth,
     private alertController: AlertController,
     private toastController: ToastController,
@@ -35,7 +38,7 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     //https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signinwithemailandpassword
-    const result = await this.afAuth
+    const result = <firebase.auth.UserCredential>await this.afAuth
       .signInWithEmailAndPassword(
         username + "@quotes.app.emircanerkul.com",
         password
@@ -80,5 +83,16 @@ export class LoginPage implements OnInit {
         this.password = "";
         loading.dismiss();
       });
+
+    if (result.user) {
+      this.user.setUser({
+        time: Date.now(),
+        uid: result.user.uid,
+        username,
+        description: undefined,
+        color: undefined,
+      });
+      this.router.navigate(["/"]);
+    }
   }
 }

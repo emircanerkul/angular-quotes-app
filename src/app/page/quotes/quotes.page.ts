@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Quote } from "./quote.module";
 import { IonInfiniteScroll } from "@ionic/angular";
+import { UserService } from "src/app/service/auth/user.service";
 
 @Component({
   selector: "app-quotes",
@@ -11,7 +12,7 @@ export class QuotesPage implements OnInit {
   page = 0;
   quotes: Quote[] = [];
 
-  constructor() {
+  constructor(public user: UserService) {
     this.loadQuotes();
   }
 
