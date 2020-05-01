@@ -1,15 +1,20 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Login</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-no-border">
   <ion-item lines="full">
     <ion-label position="floating">Username</ion-label>
     <ion-input
       type="text"
-      placeholder="Username"
+      placeholder="username"
       [(ngModel)]="username"
     ></ion-input>
   </ion-item>
@@ -17,11 +22,11 @@
     <ion-label position="floating">Password</ion-label>
     <ion-input
       type="password"
-      placeholder="Username"
+      placeholder="Pâs$w0rD"
       [(ngModel)]="password"
     ></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item lines="none">
     <ul>
       <li *ngIf="this.username.trim().length == 0">
         <ion-text color="danger">You need to enter a username.</ion-text>
@@ -33,13 +38,18 @@
       </li>
     </ul>
   </ion-item>
-  <ion-button
-    (click)="login()"
-    [disabled]="this.username.trim().length == 0 || this.password.length < 6"
-    expand="block"
-    fill="clear"
-    shape="round"
-  >
-    Login
-  </ion-button>
 </ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-button
+      (click)="login()"
+      [disabled]="this.username.trim().length == 0 || this.password.length < 6"
+      expand="block"
+      fill="clear"
+      shape="round"
+    >
+      Login
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

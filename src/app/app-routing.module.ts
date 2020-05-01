@@ -13,16 +13,9 @@ const routes: Routes = [
       import("./page/quotes/quotes.module").then((m) => m.QuotesPageModule),
   },
   {
-    path: "login",
+    path: "profile",
     loadChildren: () =>
-      import("./page/login/login.module").then((m) => m.LoginPageModule),
-  },
-  {
-    path: "register",
-    loadChildren: () =>
-      import("./page/register/register.module").then(
-        (m) => m.RegisterPageModule
-      ),
+      import("./page/profile/profile.module").then((m) => m.ProfilePageModule),
   },
 ];
 

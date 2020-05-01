@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Quote } from "./quote.module";
-import { IonInfiniteScroll } from "@ionic/angular";
+import { IonInfiniteScroll, ModalController } from "@ionic/angular";
 import { UserService } from "src/app/service/auth/user.service";
+import { LoginPage } from "../login/login.page";
+import { RegisterPage } from "../register/register.page";
 
 @Component({
   selector: "app-quotes",
@@ -12,7 +14,10 @@ export class QuotesPage implements OnInit {
   page = 0;
   quotes: Quote[] = [];
 
-  constructor(public user: UserService) {
+  constructor(
+    public user: UserService,
+    public modalController: ModalController
+  ) {
     this.loadQuotes();
   }
 
@@ -24,6 +29,25 @@ export class QuotesPage implements OnInit {
     this.page++;
     this.loadQuotes();
     if (this.page === 3) e.target.disabled = true;
+  }
+
+  async login() {
+    const modal = await this.modalController.create({
+      component: LoginPage,
+      cssClass: "dialog-modal",
+    });
+    await modal.present();
+    modal.onDidDismiss().then((r) => {
+      if (r.data == "register") this.register();
+    });
+  }
+
+  async register() {
+    const modal = await this.modalController.create({
+      component: RegisterPage,
+      cssClass: "dialog-modal",
+    });
+    await modal.present();
   }
 
   ngOnInit() {}

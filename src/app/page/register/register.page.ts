@@ -5,6 +5,7 @@ import {
   LoadingController,
   AlertController,
   ToastController,
+  ModalController,
 } from "@ionic/angular";
 import { UserService } from "src/app/service/auth/user.service";
 import { Router } from "@angular/router";
@@ -20,7 +21,8 @@ export class RegisterPage implements OnInit {
   cpassword: string = "";
 
   constructor(
-    public user: UserService,
+    private user: UserService,
+    private modalController: ModalController,
     private loadingController: LoadingController,
     private alertController: AlertController,
     private toastController: ToastController,
@@ -84,7 +86,7 @@ export class RegisterPage implements OnInit {
               message: "Unidentified error occurred. Please try again later.",
               duration: 2000,
             });
-            toast.present().then(() => this.router.navigate(["/"]));
+            toast.present().then(() => this.modalController.dismiss());
           }
           return;
         })
@@ -121,9 +123,13 @@ export class RegisterPage implements OnInit {
           });
 
           this.presentAlert("Welcome", "You are registered!", () =>
-            this.router.navigate(["/"])
+            this.router.navigate(["/profile"])
           );
         });
     }
+  }
+
+  async close() {
+    await this.modalController.dismiss();
   }
 }

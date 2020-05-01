@@ -4,10 +4,12 @@ import {
   AlertController,
   ToastController,
   LoadingController,
+  ModalController,
 } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { UserService } from "../../service/auth/user.service";
+import { RegisterPage } from "../register/register.page";
 
 export class HomePageModule {}
 @Component({
@@ -20,7 +22,8 @@ export class LoginPage implements OnInit {
   password: string = "";
 
   constructor(
-    public user: UserService,
+    private user: UserService,
+    private modalController: ModalController,
     private afAuth: AngularFireAuth,
     private alertController: AlertController,
     private toastController: ToastController,
@@ -55,8 +58,8 @@ export class LoginPage implements OnInit {
               {
                 text: "Register",
                 cssClass: "secondary",
-                handler: () => {
-                  this.router.navigateByUrl("/register");
+                handler: async () => {
+                  this.modalController.dismiss("register");
                 },
               },
             ],
@@ -92,7 +95,13 @@ export class LoginPage implements OnInit {
         description: undefined,
         color: undefined,
       });
-      this.router.navigate(["/"]);
+
+      this.modalController.dismiss();
+      this.router.navigate(["/profile"]);
     }
+  }
+
+  async close() {
+    await this.modalController.dismiss();
   }
 }
