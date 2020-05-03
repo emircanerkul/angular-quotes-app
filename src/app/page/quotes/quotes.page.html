@@ -4,37 +4,6 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid *ngIf="!user.isAvailable()">
-    <ion-row>
-      <ion-col size="6"
-        ><ion-button
-          (click)="login()"
-          expand="block"
-          fill="clear"
-          shape="round"
-        >
-          Login
-        </ion-button>
-      </ion-col>
-      <ion-col size="6">
-        <ion-button
-          (click)="register()"
-          expand="block"
-          fill="clear"
-          shape="round"
-        >
-          Register
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-item *ngIf="user.isAvailable()">
-    <ion-avatar slot="start">
-      <img [src]="user.getProfile()" />
-    </ion-avatar>
-    <ion-label>@{{ user.getUsername() }}</ion-label>
-  </ion-item>
-
   <ion-card *ngFor="let quote of quotes">
     <ion-item>
       {{ quote.title }}
@@ -48,4 +17,40 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
+  <!-- <div *ngIf="auth.user$ | async as user; else loginTemplate">
+    <ion-avatar slot="start">
+      <img [src]="user.photoURL" />
+    </ion-avatar>
+    <ion-label>@{{ user.displayName }}</ion-label>
+
+    <button (click)="auth.signOut()">Logout</button>
+  </div>
+
+  <ng-template #loginTemplate>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6"
+          ><ion-button
+            (click)="login()"
+            expand="block"
+            fill="clear"
+            shape="round"
+          >
+            Login
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button
+            (click)="register()"
+            expand="block"
+            fill="clear"
+            shape="round"
+          >
+            Register
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template> -->
 </ion-content>

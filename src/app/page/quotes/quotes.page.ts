@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Quote } from "./quote.module";
 import { IonInfiniteScroll, ModalController } from "@ionic/angular";
-import { UserService } from "src/app/service/auth/user.service";
 import { LoginPage } from "../login/login.page";
 import { RegisterPage } from "../register/register.page";
+import { AuthService } from "src/app/service/auth/auth.service";
 
 @Component({
   selector: "app-quotes",
@@ -15,8 +15,8 @@ export class QuotesPage implements OnInit {
   quotes: Quote[] = [];
 
   constructor(
-    public user: UserService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public auth: AuthService
   ) {
     this.loadQuotes();
   }

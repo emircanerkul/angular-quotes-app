@@ -7,8 +7,8 @@ import {
   ToastController,
   ModalController,
 } from "@ionic/angular";
-import { UserService } from "src/app/service/auth/user.service";
 import { Router } from "@angular/router";
+import { AuthService } from "src/app/service/auth/auth.service";
 
 @Component({
   selector: "app-register",
@@ -21,7 +21,7 @@ export class RegisterPage implements OnInit {
   cpassword: string = "";
 
   constructor(
-    private user: UserService,
+    public auth: AuthService,
     private modalController: ModalController,
     private loadingController: LoadingController,
     private alertController: AlertController,
@@ -96,7 +96,6 @@ export class RegisterPage implements OnInit {
       this.afStore
         .doc(`users/${result.user.uid}`)
         .set({
-          username,
           description: "",
           color: "",
         })
@@ -113,14 +112,13 @@ export class RegisterPage implements OnInit {
         })
         .finally(() => {
           loading.dismiss();
-
+          /*
           this.user.setUser({
-            time: Date.now(),
             uid: result.user.uid,
-            username,
+            email: "",
             description: undefined,
             color: undefined,
-          });
+          }); */
 
           this.presentAlert("Welcome", "You are registered!", () =>
             this.router.navigate(["/profile"])

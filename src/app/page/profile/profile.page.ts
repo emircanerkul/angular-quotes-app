@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
+import { AuthService } from "src/app/service/auth/auth.service";
 
 @Component({
   selector: "app-profile",
@@ -7,7 +8,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
   styleUrls: ["./profile.page.scss"],
 })
 export class ProfilePage implements OnInit {
-  constructor(private afStore: AngularFirestore) {}
+  constructor(private afStore: AngularFirestore, public auth: AuthService) {}
 
   ngOnInit() {}
 }
