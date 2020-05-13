@@ -17,8 +17,7 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
-  <!-- <div *ngIf="auth.user$ | async as user; else loginTemplate">
+  <!-- <div *ngIf="auth.user$ | async as user; else loginTemplate"  >
     <ion-avatar slot="start">
       <img [src]="user.photoURL" />
     </ion-avatar>
@@ -54,3 +53,6 @@
     </ion-grid>
   </ng-template> -->
 </ion-content>
+<ion-footer class="ion-no-border">
+  <ion-toolbar><app-navigation></app-navigation></ion-toolbar>
+</ion-footer>
