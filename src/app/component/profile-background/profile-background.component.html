@@ -1,0 +1,27 @@
+<div
+  [ngStyle]="{
+    backgroundColor: '#' + color,
+    background:
+      'linear-gradient(#' +
+      color +
+      ', #' +
+      colorModule.lightenColor(color) +
+      ')',
+    color: colorModule.invertColor(color),
+    padding: '40px 20px'
+  }"
+>
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button
+      (click)="refreshBackgroundColor()"
+      color="dark"
+      [ngStyle]="{
+        width: '36px',
+        height: '36px'
+      }"
+    >
+      <ion-icon size="small" name="refresh"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ng-content></ng-content>
+</div>

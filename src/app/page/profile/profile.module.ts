@@ -7,14 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 
 import { ProfilePage } from './profile.page';
+import { ProfileBackgroundComponent } from 'src/app/component/profile-background/profile-background.component';
+import { ColorModule } from 'src/app/modules/color/color.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfilePageRoutingModule
+    ProfilePageRoutingModule,
+    ColorModule
   ],
-  declarations: [ProfilePage]
+  declarations: [ProfilePage, ProfileBackgroundComponent]
 })
 export class ProfilePageModule {}
