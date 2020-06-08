@@ -14,7 +14,30 @@
     <app-profile-background [color]="user.color">
       <ion-avatar><ion-img [src]="user.photoURL"></ion-img> </ion-avatar>
       <ion-label>{{user.displayName}}</ion-label>
-      <ion-text *ngIf="user.description">{{user.description}}</ion-text>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col [size]="onDescriptionEdit?10:12">
+            <ion-input
+              #description
+              (click)="editDescription(description)"
+              (keyup.esc)="cancelEditDescription(description)"
+              (keyup.enter)="saveDescription(description)"
+              type="text"
+              [placeholder]="!user.description?'Click to enter something about you':''"
+              [value]="user.description?user.description:''"
+            ></ion-input>
+          </ion-col>
+          <ion-col size="2" *ngIf="onDescriptionEdit">
+            <ion-chip (click)="saveDescription(description)"
+              >{{description.value.length }}
+              <ion-icon
+                [color]="description.value.length <= maxLength ? 'success':'danger'"
+                name="checkmark-circle-outline"
+              ></ion-icon>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </app-profile-background>
 
     <pre *ngIf="isDevMode">{{user | json}}</pre>

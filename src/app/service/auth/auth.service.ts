@@ -197,6 +197,15 @@ export class AuthService {
     }
   }
 
+  async changeProfileDescription(description: string): Promise<void> {
+    this.user$.pipe(take(1)).subscribe((e) => {
+      return this.afStore
+        .collection('users')
+        .doc(e.uid)
+        .update({ description });
+    });
+  }
+
   async signOut() {
     await this.afAuth.signOut();
     return this.router.navigate(['/']);
