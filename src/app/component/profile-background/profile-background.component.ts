@@ -19,27 +19,37 @@ import { ToastController } from '@ionic/angular';
 })
 export class ProfileBackgroundComponent {
   @Input() color;
+
   constructor(
     public colorModule: ColorModule,
     private auth: AuthService,
     private afStore: AngularFirestore,
     private toastController: ToastController
   ) {}
+
   refreshBackgroundColor() {
     this.auth.user$.pipe(take(1)).subscribe((e) => {
+      let color;
+      do {
+        color = this.colorModule.getRandomColor();
+      } while (color == e.color || color == undefined);
+      console.log(color + ':' + e.uid);
+
       this.afStore
-        .doc(`users/${e.uid}`)
-        .update({
-          color: this.colorModule.getRandomColor()
-        })
+        .collection('users')
+        .doc(e.uid)
+        .update({ color })
         .catch((e) => {
           console.log(e);
           return;
         })
         .finally(() => {
-          this.toastController.create({
-            message: 'Background Changed!'
-          });
+          this.toastController
+            .create({
+              message: 'Background Changed!',
+              duration: 1000
+            })
+            .then((e) => e.present());
         });
     });
     return;
