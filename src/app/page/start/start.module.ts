@@ -9,12 +9,7 @@ import { StartPageRoutingModule } from './start-routing.module';
 import { StartPage } from './start.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    StartPageRoutingModule
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, StartPageRoutingModule],
   declarations: [StartPage]
 })
 export class StartPageModule {}

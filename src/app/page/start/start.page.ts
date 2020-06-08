@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { LoginPage } from '../login/login.page';
 import { RegisterPage } from '../register/register.page';
+import {
+  NetworkService,
+  ConnectionStatus
+} from 'src/app/service/network/network.service';
+import { Observable } from 'rxjs';
+import { catchError, share } from 'rxjs/operators';
 
 @Component({
   selector: 'app-start',
@@ -34,7 +40,10 @@ export class StartPage implements OnInit {
     speed: 400
   };
 
-  constructor(private modalController: ModalController) {}
+  constructor(
+    private modalController: ModalController,
+    public network: NetworkService
+  ) {}
 
   async login() {
     const modal = await this.modalController.create({

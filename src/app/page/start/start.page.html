@@ -18,7 +18,7 @@
         </ion-row>
       </ion-grid>
     </ion-slide>
-    <ion-slide>
+    <ion-slide *ngIf="(network.onNetworkChange()|async) == 0; else offlineView">
       <ion-grid fixed>
         <ion-row>
           <ion-col>
@@ -41,5 +41,19 @@
         </ion-row>
       </ion-grid>
     </ion-slide>
+    <ng-template #offlineView>
+      <ion-slide>
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col>
+              <h2>You're Offline</h2>
+              <p>
+                But you can look latest quotes
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-slide>
+    </ng-template>
   </ion-slides>
 </ion-content>
