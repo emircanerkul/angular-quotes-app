@@ -20,6 +20,7 @@
             <ion-input
               #description
               (click)="editDescription(description)"
+              (focusout)="cancelEditDescription(description)"
               (keyup.esc)="cancelEditDescription(description)"
               (keyup.enter)="saveDescription(description)"
               type="text"
