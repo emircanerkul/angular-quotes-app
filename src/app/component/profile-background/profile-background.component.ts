@@ -10,10 +10,10 @@ import { ToastController } from '@ionic/angular';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './profile-background.component.html',
   styles: [
-    'ion-avatar {margin: 10px auto; width: 96px; height: 96px;}',
-    'div {text-align: center}',
-    'ion-label {font-size: 16pt;}',
-    'ion-text {display: block; font-size: 10pt; background-color: #00000080; padding: 10px; margin: 10px 10px 0; border-radius: 15px;}'
+    'app-profile-background ion-avatar {margin: 10px auto; width: 96px; height: 96px;}',
+    'app-profile-background div {text-align: center}',
+    'app-profile-background ion-label {font-size: 16pt;}',
+    'app-profile-background ion-text {display: block; font-size: 10pt; background-color: #00000080; padding: 10px; margin: 10px 10px 0; border-radius: 15px;}'
   ]
 })
 export class ProfileBackgroundComponent {
