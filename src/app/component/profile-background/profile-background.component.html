@@ -13,6 +13,7 @@
 >
   <ion-fab vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button
+      [disabled]="!canRefreshBackgroundColor"
       (click)="refreshBackgroundColor()"
       color="dark"
       [ngStyle]="{
