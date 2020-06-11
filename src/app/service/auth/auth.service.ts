@@ -46,7 +46,7 @@ export class AuthService {
     if (credential.user) {
       this.updateUserData(credential.user);
       this.modalController.dismiss();
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/quotes']);
     }
   }
 
@@ -108,7 +108,7 @@ export class AuthService {
       this.updateUserData(credential.user);
 
       this.modalController.dismiss();
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/quotes']);
     }
   }
 
@@ -191,7 +191,7 @@ export class AuthService {
         .finally(() => {
           loading.dismiss();
           this.presentAlert('Welcome', 'You are registered!', () =>
-            this.router.navigate(['/profile'])
+            this.router.navigate(['/quotes'])
           );
         });
     }
@@ -208,6 +208,7 @@ export class AuthService {
 
   async signOut() {
     await this.afAuth.signOut();
+    await this.modalController.dismiss();
     return this.router.navigate(['/']);
   }
 

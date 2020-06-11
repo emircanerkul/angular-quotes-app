@@ -5,6 +5,9 @@ import { LoginPage } from '../login/login.page';
 import { RegisterPage } from '../register/register.page';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ProfilePage } from '../profile/profile.page';
+import { exit } from 'process';
+import { AuthorService } from 'src/app/service/author/author.service';
 
 @Component({
   selector: 'app-quotes',
@@ -18,28 +21,18 @@ export class QuotesPage implements OnInit {
   constructor(
     public modalController: ModalController,
     public auth: AuthService,
+    public authorService: AuthorService,
     public afStore: AngularFirestore
   ) {
-    this.afStore
-      .collection('quotes', (ref) => ref.orderBy('quote').limit(14))
-      .snapshotChanges()
-      .subscribe((quotes) => {
-        this.lastInResponse = quotes[quotes.length - 1].payload.doc;
-        quotes.forEach((v) => {
-          this.quotes.push({
-            author: '1',
-            category: 1,
-            id: 1,
-            title: v.payload.doc.data()['quote']
-          });
-        });
-      });
+    this.loadMore(null);
   }
 
   loadMore(e) {
     this.afStore
       .collection('quotes', (ref) =>
-        ref.orderBy('quote').startAfter(this.lastInResponse).limit(14)
+        this.lastInResponse[0] == undefined
+          ? ref.orderBy('quote').limit(14)
+          : ref.orderBy('quote').startAfter(this.lastInResponse).limit(14)
       )
       .snapshotChanges()
       .subscribe(
@@ -52,33 +45,22 @@ export class QuotesPage implements OnInit {
           this.lastInResponse = quotes[quotes.length - 1].payload.doc;
           quotes.forEach((v) => {
             this.quotes.push({
-              author: '1',
-              category: 1,
-              id: 1,
-              title: v.payload.doc.data()['quote']
+              author: v.payload.doc.data()['author'].id,
+              category: '1',
+              id: v.payload.doc.id,
+              title: v.payload.doc.data()['quote'],
+              created: v.payload.doc.data()['created'].seconds * 1000
             });
           });
-
-          e.target.complete();
+          if (e !== null) e.target.complete();
         },
-        (error) => (e.target.disabled = true)
+        (error) => (e !== null ? (e.target.disabled = true) : '')
       );
   }
 
-  async login() {
+  async profileModal() {
     const modal = await this.modalController.create({
-      component: LoginPage,
-      cssClass: 'dialog-modal'
-    });
-    await modal.present();
-    modal.onDidDismiss().then((r) => {
-      if (r.data == 'register') this.register();
-    });
-  }
-
-  async register() {
-    const modal = await this.modalController.create({
-      component: RegisterPage,
+      component: ProfilePage,
       cssClass: 'dialog-modal'
     });
     await modal.present();

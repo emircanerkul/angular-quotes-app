@@ -1,6 +1,7 @@
 export interface Quote {
-  id: number;
+  id: string;
   title: string;
   author: string;
-  category: number;
+  category: string;
+  created: number;
 }

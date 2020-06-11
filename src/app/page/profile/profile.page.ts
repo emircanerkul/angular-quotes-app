@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { environment } from 'src/environments/environment';
@@ -19,9 +19,7 @@ export class ProfilePage implements OnInit {
     private toastController: ToastController
   ) {}
 
-  ngOnInit() {
-    this.isDevMode = isDevMode();
-  }
+  ngOnInit() {}
 
   editDescription(input: IonInput) {
     if (!this.onDescriptionEdit) {

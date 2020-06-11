@@ -8,14 +8,14 @@ const routes: Routes = [
       import('./page/start/start.module').then((m) => m.StartPageModule)
   },
   {
-    path: 'quotes',
+    path: 'quotes/:filter',
     loadChildren: () =>
       import('./page/quotes/quotes.module').then((m) => m.QuotesPageModule)
   },
   {
-    path: 'profile',
+    path: 'quotes',
     loadChildren: () =>
-      import('./page/profile/profile.module').then((m) => m.ProfilePageModule)
+      import('./page/quotes/quotes.module').then((m) => m.QuotesPageModule)
   }
 ];
 

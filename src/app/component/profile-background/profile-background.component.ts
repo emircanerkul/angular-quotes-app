@@ -12,7 +12,7 @@ import { of } from 'rxjs';
   templateUrl: './profile-background.component.html',
   styles: [
     'app-profile-background ion-avatar {margin: 10px auto; width: 96px; height: 96px;}',
-    'app-profile-background div {text-align: center}',
+    'app-profile-background div {text-align: center; height: 100%;}',
     'app-profile-background ion-label {font-size: 16pt;}',
     'app-profile-background ion-input {font-size: 10pt!important; background-color: #00000080!important; margin: 10px 0; border-radius: 15px; --padding-end: 10px!important;}',
     'app-profile-background ion-chip {margin-top: 10px;background-color: #00000080;color: white;height: 35px;}'

@@ -1,58 +1,49 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Özlü Sözler</ion-title>
+    <ion-title>Quotes</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="quotes"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-card *ngFor="let quote of quotes">
-    <ion-item>
-      {{ quote.title }}
-    </ion-item>
-  </ion-card>
+  <div *ngIf="false else list"></div>
+  <ng-template #list>
+    <ion-card *ngFor="let quote of quotes">
+      <ion-item>
+        {{ quote.title }} {{ quote.created | timeAgo }}
+        <div *ngIf="authorService.ready">{{ quote.author | author}}</div>
+      </ion-item>
+    </ion-card>
 
-  <ion-infinite-scroll threshold="5%" (ionInfinite)="loadMore($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Daha fazlası geliyor.."
-    >
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-  <!-- <div *ngIf="auth.user$ | async as user; else loginTemplate"  >
-    <ion-avatar slot="start">
-      <img [src]="user.photoURL" />
-    </ion-avatar>
-    <ion-label>@{{ user.displayName }}</ion-label>
-
-    <button (click)="auth.signOut()">Logout</button>
-  </div>
-
-  <ng-template #loginTemplate>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="6"
-          ><ion-button
-            (click)="login()"
-            expand="block"
-            fill="clear"
-            shape="round"
-          >
-            Login
-          </ion-button>
-        </ion-col>
-        <ion-col size="6">
-          <ion-button
-            (click)="register()"
-            expand="block"
-            fill="clear"
-            shape="round"
-          >
-            Register
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ng-template> -->
+    <ion-infinite-scroll threshold="5%" (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="More quotes are comming.."
+      >
+      </ion-infinite-scroll-content> </ion-infinite-scroll
+  ></ng-template>
 </ion-content>
 <ion-footer class="ion-no-border">
-  <ion-toolbar><app-navigation></app-navigation></ion-toolbar>
+  <ion-toolbar>
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button>
+          <ion-icon name="albums-outline"></ion-icon>
+          <ion-label>Qutoes</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button>
+          <ion-icon name="star"></ion-icon>
+          <ion-label>Favorites</ion-label>
+          <ion-badge>6</ion-badge>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="profileModal();">
+          <ion-icon name="person-circle"></ion-icon>
+          <ion-label>My Profile</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
 </ion-footer>
