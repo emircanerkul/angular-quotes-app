@@ -6,7 +6,7 @@ import { AuthorService } from 'src/app/service/author/author.service';
 })
 export class AuthorPipe implements PipeTransform {
   constructor(private authorService: AuthorService) {}
-  transform(value: string): any {
-    return this.authorService.getAuthor(value);
+  async transform(value: string): Promise<any> {
+    return this.authorService.getAuthorName(value);
   }
 }

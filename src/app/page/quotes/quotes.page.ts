@@ -8,6 +8,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { ProfilePage } from '../profile/profile.page';
 import { exit } from 'process';
 import { AuthorService } from 'src/app/service/author/author.service';
+import { Route, Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-quotes',
@@ -15,30 +16,71 @@ import { AuthorService } from 'src/app/service/author/author.service';
   styleUrls: ['./quotes.page.scss']
 })
 export class QuotesPage implements OnInit {
+  private key = null;
   lastInResponse: any = [];
   quotes: Quote[] = [];
+  isIndexPage = false;
+  title = 'Quotes';
 
   constructor(
     public modalController: ModalController,
     public auth: AuthService,
     public authorService: AuthorService,
-    public afStore: AngularFirestore
-  ) {
-    this.loadMore(null);
+    public afStore: AngularFirestore,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    this.activatedRoute.paramMap.subscribe((paramMap) => {
+      switch (paramMap.get('filter')) {
+        case null:
+          this.isIndexPage = true;
+          break;
+        case 'top':
+          this.title = 'Top Quotes';
+          this.loadMore(null);
+          break;
+        case 'author':
+          let author = paramMap.get('param');
+          this.title = author.toUpperCase() + "'s Quotes";
+          this.authorService.getAuthorID(author).then((key) => {
+            this.key = key;
+            this.loadMore(null);
+          });
+          break;
+        default:
+          this.router.navigate(['quotes']);
+          break;
+      }
+    });
   }
 
   loadMore(e) {
+    let authorDocRef;
+    if (this.key != null)
+      authorDocRef = this.afStore.collection('authors').doc(this.key).ref;
+    console.log('Loaded:', this.key, authorDocRef);
+
     this.afStore
       .collection('quotes', (ref) =>
-        this.lastInResponse[0] == undefined
-          ? ref.orderBy('quote').limit(14)
-          : ref.orderBy('quote').startAfter(this.lastInResponse).limit(14)
+        this.key == null
+          ? this.lastInResponse[0] == undefined
+            ? ref.orderBy('quote').limit(8)
+            : ref.orderBy('quote').startAfter(this.lastInResponse).limit(8)
+          : this.lastInResponse[0] == undefined
+          ? ref.where('author', '==', authorDocRef).orderBy('quote').limit(8)
+          : ref
+              .where('author', '==', authorDocRef)
+              .orderBy('quote')
+              .startAfter(this.lastInResponse)
+              .limit(8)
       )
       .snapshotChanges()
       .subscribe(
         (quotes) => {
           if (!quotes.length) {
-            e.target.disabled = true;
+            if (e != null) e.target.disabled = true;
             return;
           }
 
@@ -48,13 +90,13 @@ export class QuotesPage implements OnInit {
               author: v.payload.doc.data()['author'].id,
               category: '1',
               id: v.payload.doc.id,
-              title: v.payload.doc.data()['quote'],
+              data: v.payload.doc.data()['quote'].replace(/\.$/, ''),
               created: v.payload.doc.data()['created'].seconds * 1000
             });
           });
           if (e !== null) e.target.complete();
         },
-        (error) => (e !== null ? (e.target.disabled = true) : '')
+        (error) => (e !== null ? console.log(error) : '')
       );
   }
 
@@ -65,6 +107,4 @@ export class QuotesPage implements OnInit {
     });
     await modal.present();
   }
-
-  ngOnInit() {}
 }

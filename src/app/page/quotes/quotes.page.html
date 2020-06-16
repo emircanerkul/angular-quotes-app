@@ -1,19 +1,89 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Quotes</ion-title>
+    <ion-title>{{title}}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="quotes"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div *ngIf="false else list"></div>
+  <div *ngIf="isIndexPage else list">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title class="ion-text-center"
+          >Quote of the Day</ion-card-title
+        >
+      </ion-card-header>
+      <ion-item>
+        <ion-grid fixed>
+          <ion-row class="ion-text-center">
+            <ion-col size="10" offset="1"
+              >“Neque blanditiis voluptas reiciendis commodi labore ex
+              qui.”</ion-col
+            >
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-center ion-text-uppercase">
+              maiores
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-right ion-text-lowercase" color="light">
+              {{ 1592140434000 | timeAgo }}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-card>
+    <ion-card>
+      <ion-item [routerLink]="['top']">
+        <ion-label>Top Quotes</ion-label>
+      </ion-item>
+    </ion-card>
+
+    <div *ngIf="authorService.authorNames$ | async as authors; else loading">
+      <ion-card *ngFor="let author of authors">
+        <ion-item [routerLink]="['author',author.toLowerCase()]">
+          <ion-label>{{author}}'s Quotes</ion-label>
+        </ion-item>
+      </ion-card>
+    </div>
+
+    <ng-template #loading>
+      <ion-card *ngFor="let x of [0,0,0,0,0]">
+        <ion-item>
+          <ion-skeleton-text animated style="height: 20px;"></ion-skeleton-text>
+        </ion-item>
+      </ion-card>
+    </ng-template>
+  </div>
   <ng-template #list>
     <ion-card *ngFor="let quote of quotes">
-      <ion-item>
-        {{ quote.title }} {{ quote.created | timeAgo }}
-        <div *ngIf="authorService.ready">{{ quote.author | author}}</div>
-      </ion-item>
+      <ion-item-sliding>
+        <ion-item-options side="start">
+          <ion-item-option>
+            <ion-icon slot="icon-only" name="heart"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+
+        <ion-item>
+          <ion-grid fixed>
+            <ion-row class="ion-text-center">
+              <ion-col size="10" offset="1">“{{ quote.data }}”</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="ion-text-center ion-text-uppercase">
+                {{ quote.author | author | async }}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="ion-text-right ion-text-lowercase" color="light">
+                {{ quote.created | timeAgo }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-item-sliding>
     </ion-card>
 
     <ion-infinite-scroll threshold="5%" (ionInfinite)="loadMore($event)">

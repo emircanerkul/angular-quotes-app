@@ -8,6 +8,11 @@ const routes: Routes = [
       import('./page/start/start.module').then((m) => m.StartPageModule)
   },
   {
+    path: 'quotes/:filter/:param',
+    loadChildren: () =>
+      import('./page/quotes/quotes.module').then((m) => m.QuotesPageModule)
+  },
+  {
     path: 'quotes/:filter',
     loadChildren: () =>
       import('./page/quotes/quotes.module').then((m) => m.QuotesPageModule)

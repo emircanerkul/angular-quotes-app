@@ -1,9 +1,20 @@
 ion-item {
-  background-image: webkit-gradient(
-    linear,
-    left top,
-    right top,
-    from(#6a11cb),
-    to(#2575fc)
-  );
+  .item-content {
+    background-color: #ffffff;
+  }
+
+  ion-row:nth-child(1) {
+    margin-top: 20px;
+  }
+
+  ion-row:nth-child(2) {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #666;
+  }
+
+  ion-row:nth-child(3) {
+    font-size: 10pt;
+    color: #00000080;
+  }
 }
