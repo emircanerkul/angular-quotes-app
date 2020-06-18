@@ -90,7 +90,6 @@ export class QuotesPage implements OnInit {
     let authorDocRef;
     if (this.key != null)
       authorDocRef = this.afStore.collection('authors').doc(this.key).ref;
-    console.log('Loaded:', this.key, authorDocRef);
 
     this.afStore
       .collection('quotes', (ref) =>

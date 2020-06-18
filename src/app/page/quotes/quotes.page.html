@@ -58,6 +58,39 @@
     </ng-template>
   </div>
   <ng-template #list>
+    <div *ngIf="quotes.length==0">
+      <ion-card *ngFor="let x of [0,0,0]">
+        <ion-item>
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col
+                ><ion-skeleton-text
+                  animated
+                  style="height: 16px; width: 60%; margin: 0 auto;"
+                ></ion-skeleton-text
+              ></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col
+                ><ion-skeleton-text
+                  animated
+                  style="height: 16px; width: 80%; margin: 0 auto;"
+                ></ion-skeleton-text
+              ></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col
+                ><ion-skeleton-text
+                  animated
+                  style="height: 18px; width: 40%; margin: 10px auto 20px;"
+                ></ion-skeleton-text
+              ></ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-card>
+    </div>
+
     <ion-card #card *ngFor="let quote of quotes">
       <ion-item-sliding>
         <ion-item-options side="start">
