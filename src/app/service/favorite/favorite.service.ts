@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Quote } from 'src/app/page/quotes/quote.module';
-import { IonIcon } from '@ionic/angular';
+import { IonIcon, IonItemSliding } from '@ionic/angular';
 import { from, BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 @Injectable({
@@ -27,7 +27,7 @@ export class FavoriteService {
     return this._quotes$.asObservable();
   }
 
-  favorite(data: Quote, ionIcon: IonIcon) {
+  favorite(data: Quote, ionIcon: IonIcon, slide: IonItemSliding) {
     let quote = { ...data };
     let id = quote.id;
     delete quote.id;
@@ -35,19 +35,19 @@ export class FavoriteService {
     quote.created = Date.now();
 
     this.quotes$.pipe(take(1)).subscribe((quotes) => {
-      console.log(quotes);
-
       if (quotes[id] == null) {
         quotes[id] = quote;
         this.storage.set(id, JSON.stringify(quote)).then(() => {
           ionIcon.name = 'heart-dislike-outline';
           this._quotes$.next(quotes);
+          slide.close();
         });
       } else {
         delete quotes[id];
         this.storage.remove(id).then(() => {
           ionIcon.name = 'heart';
           this._quotes$.next(quotes);
+          slide.close();
         });
       }
     });
