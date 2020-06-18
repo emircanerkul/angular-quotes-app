@@ -9,6 +9,8 @@ import { ProfilePage } from '../profile/profile.page';
 import { exit } from 'process';
 import { AuthorService } from 'src/app/service/author/author.service';
 import { Route, Router, ActivatedRoute } from '@angular/router';
+import { FavoriteService } from 'src/app/service/favorite/favorite.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-quotes',
@@ -20,6 +22,7 @@ export class QuotesPage implements OnInit {
   lastInResponse: any = [];
   quotes: Quote[] = [];
   isIndexPage = false;
+  isFavPage = false;
   title = 'Quotes';
 
   constructor(
@@ -27,6 +30,7 @@ export class QuotesPage implements OnInit {
     public auth: AuthService,
     public authorService: AuthorService,
     public afStore: AngularFirestore,
+    public favoriteService: FavoriteService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
@@ -40,6 +44,27 @@ export class QuotesPage implements OnInit {
         case 'top':
           this.title = 'Top Quotes';
           this.loadMore(null);
+          break;
+        case 'favorites':
+          if (!this.isIndexPage) {
+            this.isFavPage = true;
+            this.title = 'My Favorite Quotes';
+            this.favoriteService.quotes$.subscribe((quotes) => {
+              this.quotes = [];
+              if (quotes != null) {
+                for (let [key, value] of Object.entries(quotes)) {
+                  value['id'] = key;
+                  value['fav'] = true;
+                  this.quotes.push(value);
+                }
+              }
+              this.quotes.sort((a, b) => {
+                return b.created - a.created;
+              });
+            });
+          }
+
+          //this.loadMore(null);
           break;
         case 'author':
           let author = paramMap.get('param');
@@ -57,6 +82,11 @@ export class QuotesPage implements OnInit {
   }
 
   loadMore(e) {
+    if (this.isFavPage) {
+      e.target.complete();
+      e.target.disabled = true;
+      return;
+    }
     let authorDocRef;
     if (this.key != null)
       authorDocRef = this.afStore.collection('authors').doc(this.key).ref;
@@ -86,13 +116,16 @@ export class QuotesPage implements OnInit {
 
           this.lastInResponse = quotes[quotes.length - 1].payload.doc;
           quotes.forEach((v) => {
-            this.quotes.push({
-              author: v.payload.doc.data()['author'].id,
-              category: '1',
-              id: v.payload.doc.id,
-              data: v.payload.doc.data()['quote'].replace(/\.$/, ''),
-              created: v.payload.doc.data()['created'].seconds * 1000
-            });
+            this.favoriteService.isFav(v.payload.doc.id).then((fav) =>
+              this.quotes.push({
+                author: v.payload.doc.data()['author'].id,
+                category: '1',
+                id: v.payload.doc.id,
+                data: v.payload.doc.data()['quote'].replace(/\.$/, ''),
+                created: v.payload.doc.data()['created'].seconds * 1000,
+                fav
+              })
+            );
           });
           if (e !== null) e.target.complete();
         },

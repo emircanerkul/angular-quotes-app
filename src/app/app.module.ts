@@ -22,6 +22,7 @@ import { RegisterPageModule } from './page/register/register.module';
 import { ColorModule } from './modules/color/color.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AuthorService } from './service/author/author.service';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,10 @@ import { AuthorService } from './service/author/author.service';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: '__favorites',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,

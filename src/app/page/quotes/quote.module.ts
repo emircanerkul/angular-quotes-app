@@ -4,4 +4,5 @@ export interface Quote {
   author: string;
   category: string;
   created: number;
+  fav: boolean;
 }
