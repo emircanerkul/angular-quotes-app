@@ -101,13 +101,19 @@ export class QuotesPage implements OnInit {
       .collection('quotes', (ref) =>
         this.key == null
           ? this.lastInResponse.id == null
-            ? ref.orderBy('quote').limit(8)
-            : ref.orderBy('quote').startAfter(this.lastInResponse).limit(8)
+            ? ref.orderBy('created', 'desc').limit(8)
+            : ref
+                .orderBy('created', 'desc')
+                .startAfter(this.lastInResponse)
+                .limit(8)
           : this.lastInResponse.id == null
-          ? ref.where('author', '==', authorDocRef).orderBy('quote').limit(8)
+          ? ref
+              .where('author', '==', authorDocRef)
+              .orderBy('created', 'desc')
+              .limit(8)
           : ref
               .where('author', '==', authorDocRef)
-              .orderBy('quote')
+              .orderBy('created', 'desc')
               .startAfter(this.lastInResponse)
               .limit(8)
       )
