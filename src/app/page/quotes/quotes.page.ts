@@ -1,18 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Quote } from './quote.module';
-import { IonInfiniteScroll, ModalController } from '@ionic/angular';
-import { LoginPage } from '../login/login.page';
-import { RegisterPage } from '../register/register.page';
+import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ProfilePage } from '../profile/profile.page';
-import { exit } from 'process';
 import { AuthorService } from 'src/app/service/author/author.service';
-import { Route, Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FavoriteService } from 'src/app/service/favorite/favorite.service';
-import { take, filter, map, last } from 'rxjs/operators';
+import { filter, map, last } from 'rxjs/operators';
 import { AngularFireRemoteConfig, budget } from '@angular/fire/remote-config';
-import { Quote, Quote } from '@angular/compiler';
 
 @Component({
   selector: 'app-quotes',
