@@ -55,8 +55,8 @@ export class FavoriteService {
 
   isFav(id: string): Promise<boolean> {
     return new Promise((resolutionFunc, rejectionFunc) => {
-      this.quotes$.pipe(take(1)).subscribe((quotes) => {
-        resolutionFunc(quotes[id] != null);
+      this.quotes$.pipe(take(2)).subscribe((quotes) => {
+        if (quotes != null) resolutionFunc(quotes[id] != null);
       });
     });
   }

@@ -63,8 +63,6 @@ export class QuotesPage implements OnInit {
               });
             });
           }
-
-          //this.loadMore(null);
           break;
         case 'author':
           let author = paramMap.get('param');
