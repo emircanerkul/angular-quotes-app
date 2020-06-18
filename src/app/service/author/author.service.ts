@@ -23,7 +23,7 @@ export class AuthorService {
           tmp[v.payload.doc.id] = v.payload.doc.data()['name'];
           tmp2.push(v.payload.doc.data()['name']);
         });
-
+        tmp2.sort();
         this._authors$.next(tmp);
         this.authorNames$.next(tmp2);
       });
