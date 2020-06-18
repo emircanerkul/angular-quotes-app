@@ -25,8 +25,8 @@ export class AnonymousOnlyGuard implements CanActivate {
     | UrlTree {
     return this.auth.user$.pipe(
       take(1),
-      map((e) => e != null),
-      tap((e) => (e ? this.router.navigate(['/quotes']) : null))
+      map((e) => e == null),
+      tap((e) => (e ? null : this.router.navigate(['/quotes'])))
     );
   }
 }

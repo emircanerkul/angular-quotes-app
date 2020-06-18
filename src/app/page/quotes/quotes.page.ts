@@ -10,7 +10,9 @@ import { exit } from 'process';
 import { AuthorService } from 'src/app/service/author/author.service';
 import { Route, Router, ActivatedRoute } from '@angular/router';
 import { FavoriteService } from 'src/app/service/favorite/favorite.service';
-import { take } from 'rxjs/operators';
+import { take, filter, map, last } from 'rxjs/operators';
+import { AngularFireRemoteConfig, budget } from '@angular/fire/remote-config';
+import { Quote, Quote } from '@angular/compiler';
 
 @Component({
   selector: 'app-quotes',
@@ -20,6 +22,7 @@ import { take } from 'rxjs/operators';
 export class QuotesPage implements OnInit {
   private key = null;
   lastInResponse: any = [];
+  quoteOfTheDay: Quote;
   quotes: Quote[] = [];
   isIndexPage = false;
   isFavPage = false;
@@ -30,6 +33,7 @@ export class QuotesPage implements OnInit {
     public auth: AuthService,
     public authorService: AuthorService,
     public afStore: AngularFirestore,
+    private afRemoteConfig: AngularFireRemoteConfig,
     public favoriteService: FavoriteService,
     private activatedRoute: ActivatedRoute,
     private router: Router
@@ -40,6 +44,14 @@ export class QuotesPage implements OnInit {
       switch (paramMap.get('filter')) {
         case null:
           this.isIndexPage = true;
+          this.afRemoteConfig.changes
+            .pipe(
+              filter((param) => param.key === 'QUOTE_OF_THE_DAY'),
+              map((param) => param.asString()),
+              budget(800),
+              last()
+            )
+            .subscribe((e) => (this.quoteOfTheDay = JSON.parse(e)));
           break;
         case 'top':
           this.title = 'Top Quotes';

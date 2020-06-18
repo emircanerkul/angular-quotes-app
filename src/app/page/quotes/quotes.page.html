@@ -8,7 +8,9 @@
 </ion-header>
 <ion-content>
   <div *ngIf="isIndexPage else list">
-    <ion-card>
+    <ion-card
+      *ngIf="this.quoteOfTheDay != undefined else quoteOfTheDaySkeleton"
+    >
       <ion-card-header>
         <ion-card-title class="ion-text-center"
           >Quote of the Day</ion-card-title
@@ -18,23 +20,54 @@
         <ion-grid fixed>
           <ion-row class="ion-text-center">
             <ion-col size="10" offset="1"
-              >“Neque blanditiis voluptas reiciendis commodi labore ex
-              qui.”</ion-col
+              >“{{this.quoteOfTheDay.data}}”</ion-col
             >
           </ion-row>
           <ion-row>
             <ion-col class="ion-text-center ion-text-uppercase">
-              maiores
+              {{ this.quoteOfTheDay.author | author | async }}
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col class="ion-text-right ion-text-lowercase" color="light">
-              {{ 1592140434000 | timeAgo }}
+              {{ this.quoteOfTheDay.created | timeAgo }}
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-item>
     </ion-card>
+    <ng-template #quoteOfTheDaySkeleton>
+      <ion-card>
+        <ion-item>
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col
+                ><ion-skeleton-text
+                  animated
+                  style="height: 16px; width: 60%; margin: 0 auto;"
+                ></ion-skeleton-text
+              ></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col
+                ><ion-skeleton-text
+                  animated
+                  style="height: 16px; width: 80%; margin: 0 auto;"
+                ></ion-skeleton-text
+              ></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col
+                ><ion-skeleton-text
+                  animated
+                  style="height: 18px; width: 40%; margin: 10px auto 20px;"
+                ></ion-skeleton-text
+              ></ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-card>
+    </ng-template>
     <ion-card>
       <ion-item [routerLink]="['top']">
         <ion-label>Top Quotes</ion-label>
