@@ -92,10 +92,10 @@ export class QuotesPage implements OnInit {
     this.afStore
       .collection('quotes', (ref) =>
         this.key == null
-          ? this.lastInResponse[0] == undefined
+          ? this.lastInResponse.id == null
             ? ref.orderBy('quote').limit(8)
             : ref.orderBy('quote').startAfter(this.lastInResponse).limit(8)
-          : this.lastInResponse[0] == undefined
+          : this.lastInResponse.id == null
           ? ref.where('author', '==', authorDocRef).orderBy('quote').limit(8)
           : ref
               .where('author', '==', authorDocRef)
