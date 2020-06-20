@@ -7,26 +7,25 @@ import { IonicModule } from '@ionic/angular';
 import { QuotesPageRoutingModule } from './quotes-routing.module';
 
 import { QuotesPage } from './quotes.page';
-import { ProfilePage } from '../profile/profile.page';
 import { ProfilePageModule } from '../profile/profile.module';
-import { AuthorPipe } from 'src/app/pipe/author/author.pipe';
 import { AuthorService } from 'src/app/service/author/author.service';
-import { TimeAgoPipe } from 'time-ago-pipe';
 import { FavoriteService } from 'src/app/service/favorite/favorite.service';
 import { AngularFireRemoteConfigModule } from '@angular/fire/remote-config';
 import { DEFAULTS } from '@angular/fire/remote-config';
 import { SETTINGS } from '@angular/fire/remote-config';
+import { MainModule } from 'src/app/modules/main/main.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    MainModule,
     QuotesPageRoutingModule,
     ProfilePageModule,
     AngularFireRemoteConfigModule
   ],
-  declarations: [QuotesPage, AuthorPipe, TimeAgoPipe],
+  declarations: [QuotesPage],
   providers: [
     AuthorService,
     FavoriteService,

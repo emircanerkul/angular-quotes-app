@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { LoginPage } from '../login/login.page';
 import { RegisterPage } from '../register/register.page';
-import {
-  NetworkService,
-  ConnectionStatus
-} from 'src/app/service/network/network.service';
+import { NetworkService } from 'src/app/service/network/network.service';
 import { Observable } from 'rxjs';
 import { catchError, share } from 'rxjs/operators';
+import { Quote } from '../quotes/quote.module';
+import { FavoriteService } from 'src/app/service/favorite/favorite.service';
+import { AuthorService } from 'src/app/service/author/author.service';
 
 @Component({
   selector: 'app-start',
@@ -34,6 +34,7 @@ export class StartPage implements OnInit {
       img: 'assets/img/dostoevsky.png'
     }
   ];
+  favoriteQuotes: Quote[] = [];
 
   slideOpts = {
     initialSlide: 0,
@@ -41,9 +42,27 @@ export class StartPage implements OnInit {
   };
 
   constructor(
+    public network: NetworkService,
+    public authorService: AuthorService,
     private modalController: ModalController,
-    public network: NetworkService
+    private favoriteService: FavoriteService
   ) {}
+
+  ngOnInit() {
+    this.favoriteService.quotes$.subscribe((quotes) => {
+      this.favoriteQuotes = [];
+      if (quotes != null) {
+        for (let [key, value] of Object.entries(quotes)) {
+          value['id'] = key;
+          value['fav'] = true;
+          this.favoriteQuotes.push(value);
+        }
+      }
+      this.favoriteQuotes.sort((a, b) => {
+        return b.created - a.created;
+      });
+    });
+  }
 
   async login() {
     const modal = await this.modalController.create({
@@ -66,6 +85,4 @@ export class StartPage implements OnInit {
       if (r.data == 'login') this.login();
     });
   }
-
-  ngOnInit() {}
 }

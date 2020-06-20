@@ -1,5 +1,9 @@
 <ion-content>
-  <ion-slides pager="true" [options]="slideOpts">
+  <ion-slides
+    *ngIf="(network.onNetworkChange()|async) == 0; else offlineView"
+    pager="true"
+    [options]="slideOpts"
+  >
     <ion-slide *ngFor="let quote of featuredQuotes">
       <ion-grid fixed>
         <ion-row>
@@ -9,26 +13,22 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <p>
-              “{{ quote.quote }}”
-            </p>
-
+            <p>“{{ quote.quote }}”</p>
             <p>{{ quote.author }}</p>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-slide>
-    <ion-slide *ngIf="(network.onNetworkChange()|async) == 0; else offlineView">
+    <ion-slide>
       <ion-grid fixed>
         <ion-row>
           <ion-col>
             <h1>Get More Quote</h1>
             <p>
-              Labore porro veritatis veniam nihil quaerat ipsam et. Cumque
-              ducimus autem esse. Est et voluptatem consequatur sit adipisci
-              fugit neque accusamus. Molestiae numquam deleniti qui rerum sit
-              veritatis dolor. Molestiae itaque inventore exercitationem
-              quisquam nihil aut iusto ipsa.
+              When you register for <strong>FREE</strong>, you can access
+              <strong>10.000+</strong> quotes. Also you can create your own
+              favorite list. When you're offline you can access your favorite
+              list.
             </p>
           </ion-col>
         </ion-row>
@@ -41,19 +41,80 @@
         </ion-row>
       </ion-grid>
     </ion-slide>
-    <ng-template #offlineView>
-      <ion-slide>
-        <ion-grid fixed>
-          <ion-row>
-            <ion-col>
-              <h2>You're Offline</h2>
-              <p>
-                But you can look latest quotes
-              </p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-slide>
-    </ng-template>
   </ion-slides>
+  <ng-template #offlineView>
+    <ion-img id="plug" src="assets/img/plug.svg"></ion-img>
+
+    <ion-grid fixed>
+      <ion-row class="ion-text-right">
+        <ion-col>
+          <h3>You're Offline</h3>
+          <ion-label>You can view your favorite quote list</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div *ngIf="favoriteQuotes.length==0">
+            <ion-card *ngFor="let x of [0,0,0]">
+              <ion-item>
+                <ion-grid fixed>
+                  <ion-row>
+                    <ion-col
+                      ><ion-skeleton-text
+                        animated
+                        style="height: 16px; width: 60%; margin: 0 auto;"
+                      ></ion-skeleton-text
+                    ></ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col
+                      ><ion-skeleton-text
+                        animated
+                        style="height: 16px; width: 80%; margin: 0 auto;"
+                      ></ion-skeleton-text
+                    ></ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col
+                      ><ion-skeleton-text
+                        animated
+                        style="
+                          height: 18px;
+                          width: 40%;
+                          margin: 10px auto 20px;
+                        "
+                      ></ion-skeleton-text
+                    ></ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-card>
+          </div>
+
+          <ion-card #card *ngFor="let quote of favoriteQuotes">
+            <ion-item>
+              <ion-grid fixed>
+                <ion-row class="ion-text-center">
+                  <ion-col size="10" offset="1">“{{ quote.data }}”</ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="ion-text-center ion-text-uppercase">
+                    {{ quote.author | author | async }}
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col
+                    class="ion-text-right ion-text-lowercase"
+                    color="light"
+                  >
+                    {{ quote.created | timeAgo }}
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
 </ion-content>

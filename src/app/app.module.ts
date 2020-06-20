@@ -21,7 +21,6 @@ import { LoginPageModule } from './page/login/login.module';
 import { RegisterPageModule } from './page/register/register.module';
 import { ColorModule } from './modules/color/color.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AuthorService } from './service/author/author.service';
 import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
