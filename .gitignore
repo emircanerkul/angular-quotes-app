@@ -29,3 +29,9 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/resources
+/e2e
+/android
+/**/*.cache
+/other
+.*
