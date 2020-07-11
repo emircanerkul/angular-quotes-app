@@ -10,6 +10,23 @@
 - Daily Quotes thanks for Firebase Remote Config
 - Offline Favorite List
 
+#### Example environment.ts file
+```ts
+export const environment = {
+    production: false,
+    firebase: {
+      apiKey: 'AIzeSyCiMPJoa5JBRLnx8_2bIHvy1ip3MyAwO-A',
+      authDomain: 'quotes.firebaseapp.com',
+      databaseURL: 'https://quotes.firebaseio.com',
+      projectId: 'quotes',
+      storageBucket: 'quotes.appspot.com',
+      messagingSenderId: '321217248775',
+      appId: '1:321217248775:web:kje0de02310f2d927vda13',
+      measurementId: 'G-447MHHL7Z9'
+    }
+  };
+```
+
 #### Completed Courses & Tutorials (~1 day 12 hours 40 minutes)
 
 - [Angular Components Beginner's Guide](https://www.youtube.com/watch?v=IZEolKjcjks) (10m)
